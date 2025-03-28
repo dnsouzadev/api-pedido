@@ -1,6 +1,7 @@
 package com.dnsouzadev.pedidos.api.controller;
 
 import com.dnsouzadev.pedidos.api.entity.Pedido;
+import com.dnsouzadev.pedidos.api.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,7 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/pedidos")
 public class PedidoController {
 
+    private final PedidoService pedidoService;
+
     private final Logger log = LoggerFactory.getLogger(PedidoController.class);
+
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
 
     @Operation(summary = "Cria um novo pedido", description = "Cria um novo pedido",
             responses = @ApiResponse(responseCode = "201", description = "Pedido criado com sucesso",
@@ -28,6 +35,7 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<Pedido> criarPedido(@RequestBody Pedido pedido) {
         log.info("Criando pedido: {}", pedido.toString());
+        pedido = pedidoService.enfileirarPedido(pedido);
         return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
 }
