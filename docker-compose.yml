@@ -1,0 +1,17 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.0.7-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: 'rabbitmq'
+      RABBITMQ_DEFAULT_PASS: 'rabbitmq'
+    ports:
+      - '15672:15672' # RabbitMQ Management UI
+      - '5672:5672'   # RabbitMQ AMQP protocol
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_log:/var/lib/rabbitmq/log
+
+volumes:
+  rabbitmq_data:
+  rabbitmq_log:
